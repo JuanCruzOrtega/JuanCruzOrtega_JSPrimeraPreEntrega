@@ -1,88 +1,46 @@
-// // // Solicitar nombre y apellido
+let productoElegido = ""
+let cantidadElegida = 0
+let precio = 0
+let precioTotal = 0
+let compraMas = "false"
 
-// // /*let nombreIngresado = prompt("Ingrese su nombre");
-// // let apellidoIngresado = prompt("Ingrese su apellido");
-// // const resultado = nombreIngresado + " " + apellidoIngresado;
+alert("Ingrese la opción que desea comprar, sino ingrese 0")
+productoElegido = parseInt(prompt("1- hamburguesa con cheddar ($1300), 2- hamburguesa con bacon ($1500), 3- hamburguesa clasica ($1500)"));
 
-// // alert("Hola " + " " + resultado + " " + "bienvenido a O´Burgers")
+const cantidad = (cant, precio) => {
+    return cant * precio;
+}
 
-
-// // // Solicitar número
-
-// // let numeroA = Number(prompt("Ingrese un número"));
-// // const numeroB = Number(prompt("Ingrese otro número"));
-// // const resultado2 = numeroA + numeroB;
-
-// // console.log(resultado2)
-
-// // alert("Muy bien, el resultado es" + " " + resultado2)
-// // */
-
-
-
-// // let number = Number(prompt("Ingrese un número mayor a 1000"))
-
-// // if (number > 1000) {
-// //     // alert("CORRECTO, ES MAYOR A 1000")
-// // } else {
-// //     alert("Ponga bien el número")
-// // }
-
-// // //let number = Number(prompt("Ingresa un número"))
-
-// // //if ((number >= 10) && (number <= 50)) {
-// //     //alert("Tu numero está entre 10 y 50, es corecto.")
-// // //} else{
-// //     //alert("Tu numero es incorrecto")
-// // //} 
+const totalEnvio = () => {
+    if (precio >= 3000){
+        alert("El envío es gratis")
+    } else{
+        precio <= 2999
+        alert("El costo de envío es 400, el total es " + (precio + 400) )
+    }
+}
 
 
-// function calcularOperacion(primerNumero, segundoNumero, operacion) {
-//     switch (operacion) {
-//         case '+':
-//             return primerNumero + segundoNumero;
-//         case '-':
-//             return primerNumero - segundoNumero;
-//         case '*':
-//             return primerNumero * segundoNumero;
-//         case '/':
-//             return primerNumero / segundoNumero;
-//         default:
-//             return 0;
-//     }
-// };
+while (productoElegido != "0") {
+    switch (productoElegido) {
+        case 1:
+            cantidadElegida = parseInt(prompt("Elegiste hamburguesa con cheddar. ¿Cuantas queres llevar?"))
+            precio += cantidad(cantidadElegida, 1300)
+            break;
+        case 2:
+            cantidadElegida = parseInt(prompt("Elegiste hamburguesa clasica. ¿Cuantas queres llevar?"))
+            precio += cantidad(cantidadElegida, 1500)
+            break;
+        case 3:
+            cantidadElegida = parseInt(prompt("Elegiste hamburguesa clasica. ¿Cuantas queres llevar?"))
+            precio += cantidad(cantidadElegida, 1500)
+            break;
+        default:
+            break;
+    }
+    productoElegido = parseInt(prompt("1- hamburguesa con cheddar ($1300), 2- hamburguesa con bacon ($1500), 3- hamburguesa clasica ($1500). Para salir ingresa 0"));
+}
 
-// let numeroA = Number(prompt("Ingrese su primer número"))
-// let numeroB = Number(prompt("Ingrese el segundo número"))
-// let operador = prompt("Ingrese si quiere sumar, restar, dividir o multiplicar")
+//alert("El total de la compra es " + precioTotal)
 
-// let resultado = calcularOperacion(numeroA, numeroB, operador);
-
-// alert("El resultado de la operación es: "+ resultado)
-
-// console.log(resultado)
-//|| (producto !== "si") || (producto !== "Si") || (producto === "si") || (producto === "Si")
-
-//SIMULADOR INTERACTIVO
-
-let producto = "";
-let precio = 0;
-let cantidad = 0;
-let cantidadTotal = 0;
-let seguirComprando = false;
-let precioTotal = 0;
-
-
-
-    producto = prompt("¿Queres comprar una hamburguesa?");
-    cantidad = Number(prompt("Cuantas querrías comprar?"));
-
-    while (producto !== "SI" ) {
-        if (producto === "SI")  {
-         alert = ("Mirá nuestros combos") } else { alert = "Gracias por visitar nuestro sitio."}
-        cantidad = Number(prompt("Cuantas queres?"))
-
-    } 
-
-
-
+precioTotal = totalEnvio()
