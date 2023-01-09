@@ -1,52 +1,118 @@
-let productoElegido = ""
-let cantidadElegida = 0
-let precio = 0
-let precioTotal = 0
-let compraMas = false;
+// CARRO //
+const carrito = [];
 
-alert("Ingrese la opción que desea comprar, sino ingrese 0")
-productoElegido = parseInt(prompt("1- hamburguesa con cheddar ($1300), 2- hamburguesa con bacon ($1500), 3- hamburguesa clasica ($1500)"));
+// ARRAY DE PRODUCTOS
+const hamburguesas = [
+    { id: 1, nombre: "Hamburguesa con cheddar", precio: 1800, cantidad: 0 },
+    { id: 2, nombre: "Hamburguesa con bacon", precio: 1800, cantidad: 0 },
+    { id: 3, nombre: "Hamburguesa clasica", precio: 2000, cantidad: 0 },
+    { id: 4, nombre: "Hamburguesa especial", precio: 2300, cantidad: 0 },
+    { id: 5, nombre: "Hamburguesa doble", precio: 2200, cantidad: 0 }
+];
 
-const cantidad = (cant, precio) => {
-    return cant * precio;
+//Ordenar la lista por precio de mayor a menor
+const ordenarPorPrecio = () => {
+    hamburguesas.sort((a, b) => b.precio - a.precio)
+    listaOrdenada()
 }
 
-const totalEnvio = () => {
-    let conEnvioADomicilio = false;
-    conEnvioADomicilio = confirm("Queres envío a domicilio?")
-
-
-    if (conEnvioADomicilio && precio >= 3000) {
-        alert("El envío es gratis, el total es $" + (precio))
-    } else if (conEnvioADomicilio && precio < 3000) {
-        alert("El costo de envío es 400, el total es $" + (precio + 400))
-    } else {
-        alert("Podes pasarlo a retirarlo. El pedido estara listo en aproximadamente 30 minutos")
-    }
+//Mostrar lista al usuario
+const listaOrdenada = (productos) => {
+    const listaDeHamburguesas = hamburguesas.map(productos => {
+        return "- " + productos.nombre + "- $" + productos.precio
+    })
+    alert("Esta es la lista de nuestras hamburguesas:" + '\n\n' + listaDeHamburguesas.join("\n"))
+    compraProducto(listaDeHamburguesas)
 }
 
-
-
-    while (productoElegido != "0") {
-        switch (productoElegido) {
-            case 1:
-                cantidadElegida = parseInt(prompt("Elegiste hamburguesa con cheddar. ¿Cuantas queres llevar?"))
-                precio += cantidad(cantidadElegida, 1300)
-                break;
-            case 2:
-                cantidadElegida = parseInt(prompt("Elegiste hamburguesa clasica. ¿Cuantas queres llevar?"))
-                precio += cantidad(cantidadElegida, 1500)
-                break;
-            case 3:
-                cantidadElegida = parseInt(prompt("Elegiste hamburguesa clasica. ¿Cuantas queres llevar?"))
-                precio += cantidad(cantidadElegida, 1500)
-                break;
-            default:
-                productoElegido = 0;
-                cantidadElegida = 0;
-                break;
+//Validar cantidad de productos
+const validarCantidad = (cantidad) => {
+    while (Number.isNaN(cantidad) || cantidad === 0) {
+        if (cantidad !== 0) {
+            alert("Debe elegir una opción.")
+        } else {
+            alert("Debe elegir una opción que no sea 0.")
         }
-        productoElegido = parseInt(prompt("1- hamburguesa con cheddar ($1300), 2- hamburguesa con bacon ($1500), 3- hamburguesa clasica ($1500). Para salir ingresa 0"));
+        cantidad = parseInt(prompt("¿Cuantas queres llevar?"));
     }
 
-precioTotal = totalEnvio()
+    return cantidad;
+};
+
+// ELEGIR PRODUCTO
+const compraProducto = (listaDeHamburguesas) => {
+    let productoElegido = ""
+    let cantidadElegida = 0
+    let compraMas = false;
+    
+    do {
+        productoElegido = prompt("Ingrese la opción que desea comprar"+("\n")+ listaDeHamburguesas.join("\n"));
+        cantidadElegida = parseInt(prompt("¿Cuantas queres llevar?"))
+
+        let cantidadValidada = validarCantidad(cantidadElegida);
+
+        const producto = hamburguesas.find(hamburguesa => hamburguesa.nombre.toLowerCase() === productoElegido.toLowerCase())
+
+        if (producto) {
+            sumarAlCarro(producto, producto.id, cantidadElegida)
+        } else {
+            alert("Lo que eligió no se encuentra en la lista, por favor, escríbalo completo y correctamente")
+        }
+
+        compraMas = confirm("¿Queres agregar algo más?")
+        console.log(producto)
+
+    } while (compraMas);
+    
+    devolverCompra()
+};
+
+const sumarAlCarro = (producto, productoId, cantidadElegida) => {
+    const repetido = carrito.find (producto => producto.id === productoId)
+    if (!repetido) {
+        producto.cantidad += cantidadElegida
+        carrito.push(producto)
+    } else {
+        repetido.cantidad += cantidadElegida
+    }
+};
+
+const devolverCompra = () => {
+    const listaProducto = carrito.map(producto => {
+        return "- "+ producto.nombre + "\n" + " Cantidad: "+ producto.cantidad
+    })
+
+    const mostrarCarro = confirm('Tenes estos productos: '
+        +'\n\n'+listaProducto.join('\n')
+        +'\n\nPara continuar presione "Aceptar"'
+    )
+
+    finalizarCompra(listaProducto)
+};
+
+const finalizarCompra = (listaProducto) => {
+    const cantidadTotal = carrito.reduce ((acc, item) => acc + (item.cantidad, 0))
+    const precioTotal = carrito.reduce ((acc, item) => acc + (item.precio * item.cantidad, 0))
+    alert('Mas detalles de su compra: '+'\n\n'+listaProducto.join('\n')+'\n\nTotal de productos: '+cantidadTotal+'\n\nPrecio total: '+precioTotal)
+    console.log(precioTotal)
+};
+
+ordenarPorPrecio()
+devolverCompra()
+
+
+// const totalEnvio = (precioTotal) => {
+//     let conEnvioADomicilio = false;
+//     conEnvioADomicilio = confirm("Queres envío a domicilio?");
+
+
+//     if (conEnvioADomicilio && precioTotal >= 3000) {
+//         alert("El envío es gratis, el total es $" + (precioTotal))
+//     } else if (conEnvioADomicilio && precioTotal < 3000) {
+//         alert("El costo de envío es 400, el total es $" + (precioTotal + 400))
+//     } else {
+//         alert("Podes pasarlo a retirarlo. El pedido estara listo en aproximadamente 30 minutos. El total es " + (precioTotal))
+//     }
+// };
+
+
