@@ -14,7 +14,7 @@ const hamburguesas = [
 const ordenarPorPrecio = () => {
     hamburguesas.sort((a, b) => b.precio - a.precio)
     listaOrdenada()
-}
+};
 
 //Mostrar lista al usuario
 const listaOrdenada = (productos) => {
@@ -23,7 +23,7 @@ const listaOrdenada = (productos) => {
     })
     alert("Esta es la lista de nuestras hamburguesas:" + '\n\n' + listaDeHamburguesas.join("\n"))
     compraProducto(listaDeHamburguesas)
-}
+};
 
 //Validar cantidad de productos
 const validarCantidad = (cantidad) => {
@@ -67,6 +67,7 @@ const compraProducto = (listaDeHamburguesas) => {
     devolverCompra()
 };
 
+//AGREGAR PRODUCTO AL CARRITO
 const sumarAlCarro = (producto, productoId, cantidadElegida) => {
     const repetido = carrito.find (producto => producto.id === productoId)
     if (!repetido) {
@@ -77,42 +78,53 @@ const sumarAlCarro = (producto, productoId, cantidadElegida) => {
     }
 };
 
+//MOSTRAR CARRITO Y TOTAL DE LA COMPRA
 const devolverCompra = () => {
     const listaProducto = carrito.map(producto => {
         return "- "+ producto.nombre + "\n" + " Cantidad: "+ producto.cantidad
     })
+    const mostrarCarro = confirm('Tienes estos productos: '
+    +'\n\n'+listaProducto.join('\n\n')
+    +'\n\n'+'¿Quieres hacer el pago?')
+    
 
-    const mostrarCarro = confirm('Tenes estos productos: '
-        +'\n\n'+listaProducto.join('\n')
-        +'\n\nPara continuar presione "Aceptar"'
-    )
-
-    finalizarCompra(listaProducto)
+if (mostrarCarro) {
+    const total = carrito.reduce((acumulador, producto) => {
+        return acumulador + (producto.precio * producto.cantidad)
+    }, 0)
+    alert('El total a pagar es: $'+total)
+    totalEnvio(total)
+} else {
+    ordenarPorPrecio()
+}
 };
 
-const finalizarCompra = (listaProducto) => {
-    const cantidadTotal = carrito.reduce ((acc, item) => acc + (item.cantidad, 0))
-    const precioTotal = carrito.reduce ((acc, item) => acc + (item.precio * item.cantidad, 0))
-    alert('Mas detalles de su compra: '+'\n\n'+listaProducto.join('\n')+'\n\nTotal de productos: '+cantidadTotal+'\n\nPrecio total: '+precioTotal)
-    console.log(precioTotal)
+
+// const eliminarProducto = (productoId) => {
+//     // Obtener el índice del producto a eliminar
+//     const indice = carrito.findIndex(producto => producto.id === productoId);
+//     // Eliminar el producto del carrito
+//     carrito.splice(indice, 1);
+// }
+
+const totalEnvio = (total) => {
+    let conEnvioADomicilio = false;
+    conEnvioADomicilio = confirm("Queres envío a domicilio?");
+
+
+    if (conEnvioADomicilio && total >= 3000) {
+        alert("El envío es gratis, el total es $" + (total))
+    } else if (conEnvioADomicilio && total < 3000) {
+        alert("El costo de envío es 400, el total es $" + (total + 400))
+    } else {
+        alert("Podes pasarlo a retirarlo. El pedido estara listo en aproximadamente 30 minutos. El total es " + (total))
+    }
 };
 
-ordenarPorPrecio()
-devolverCompra()
+ordenarPorPrecio();
 
 
-// const totalEnvio = (precioTotal) => {
-//     let conEnvioADomicilio = false;
-//     conEnvioADomicilio = confirm("Queres envío a domicilio?");
 
 
-//     if (conEnvioADomicilio && precioTotal >= 3000) {
-//         alert("El envío es gratis, el total es $" + (precioTotal))
-//     } else if (conEnvioADomicilio && precioTotal < 3000) {
-//         alert("El costo de envío es 400, el total es $" + (precioTotal + 400))
-//     } else {
-//         alert("Podes pasarlo a retirarlo. El pedido estara listo en aproximadamente 30 minutos. El total es " + (precioTotal))
-//     }
-// };
 
 
